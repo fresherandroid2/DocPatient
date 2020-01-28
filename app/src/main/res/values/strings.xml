@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Doctor Patient App</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="new_user_sign_up_here">New User? Sign Up Here</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="already_registered_sign_in_here">Already Registered? Sign In Here</string>
+    <string name="title_activity_doctor">DoctorActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_patient">PatientActivity</string>
+    <string name="title_visits">Visits</string>
+    <string name="title_appointmentschedule">Appointment schedule</string>
+    <string name="title_visit">Visits</string>
+    <string name="title_appointmentrejected">Appointment rejected</string>
+    <string name="Registereddoctors">Doctors available</string>
+    <string name="name">Dr Zen</string>
+    <string name="number">9805426754</string>
+    <string name="request">Request for appointment</string>
+    <string name="create_appointment">Create appointment</string>
+    <string name="save">Save</string>
+    <string name="create_appointment_name">Name</string>
+</resources>
