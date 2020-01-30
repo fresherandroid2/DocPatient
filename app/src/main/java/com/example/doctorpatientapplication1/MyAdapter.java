@@ -1,4 +1,6 @@
 package com.example.doctorpatientapplication1;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.doctorpatientapplication1.ui.RequestActivity;
 
 import java.util.List;
 
@@ -24,9 +28,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
         }
     }
 
-    private List<scheduledAppointment> myAppointment;
+    private List<ScheduledAppointment> myAppointment;
 
-    public MyAdapter(List<scheduledAppointment> myAppointment) {
+    public MyAdapter(List<ScheduledAppointment> myAppointment) {
         this.myAppointment = myAppointment;
     }
 
@@ -50,6 +54,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
             @Override
             public void onClick(View v) {
                 // Create the functionality
+
+                if(v.getContext() instanceof PatientActivity) {
+                    Intent intent = new Intent(v.getContext(), RequestActivity.class);
+                    Log.d("msg","in it");
+                    intent.putExtra("AppointmentId", myAppointment.get(holder.getAdapterPosition()).appointmentID);
+                    v.getContext().startActivity(intent);
+                }
+                else {
+                    Intent intent = new Intent(v.getContext(), ApprovedActivity.class);
+                    v.getContext().startActivity(intent);
+                }
+
             }
         });
     }

@@ -2,19 +2,20 @@ package com.example.doctorpatientapplication1.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.doctorpatientapplication1.MainActivity;
 import com.example.doctorpatientapplication1.R;
-import com.example.doctorpatientapplication1.scheduledAppointment;
+import com.example.doctorpatientapplication1.ScheduledAppointment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CreateAppointmentActivity extends AppCompatActivity {
 
@@ -22,7 +23,6 @@ public class CreateAppointmentActivity extends AppCompatActivity {
     Button save;
     private FirebaseUser currentUser;
     private DatabaseReference myRef;
-    static int appointmentId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,9 @@ public class CreateAppointmentActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createAppointmentinFirebase(date.getText().toString(),createAppointment.getText().toString());
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
+                String format = simpleDateFormat.format(new Date());
+                createAppointmentinFirebase(createAppointment.getText().toString(), date.getText().toString(), format);
            //finish();
              //   Intent intent = new Intent(CreateAppointmentActivity.this, MainActivity.class);
                // startActivity(intent);
@@ -45,10 +47,10 @@ public class CreateAppointmentActivity extends AppCompatActivity {
         });
     }
 
-    public void createAppointmentinFirebase(String created, String appointmentCreated) {
-        scheduledAppointment appointments = new scheduledAppointment(created, appointmentCreated);
-        myRef.child("appointment").child(String.valueOf(appointmentId)).setValue(appointments);
-        appointmentId++;
+    public void createAppointmentinFirebase(String appointmentCreated, String date, String timeStamp) {
+        ScheduledAppointment appointments = new ScheduledAppointment(appointmentCreated, currentUser.getUid(), timeStamp);
+        appointments.date = date;
+        myRef.child("appointment").push().setValue(appointments);
     }
 }
 

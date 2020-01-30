@@ -23,4 +23,6 @@
     <string name="create_appointment">Create appointment</string>
     <string name="save">Save</string>
     <string name="create_appointment_name">Name</string>
+    <string name="Dr.Matthews">Dr Matthews</string>
+    <string name="bookanappointment">Book an appointment</string>
 </resources>

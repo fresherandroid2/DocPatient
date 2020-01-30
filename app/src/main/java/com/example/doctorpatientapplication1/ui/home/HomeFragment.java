@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,12 +13,12 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doctorpatientapplication1.DoctorActivity;
 import com.example.doctorpatientapplication1.MyAdapter;
 import com.example.doctorpatientapplication1.PatientActivity;
 import com.example.doctorpatientapplication1.R;
-import com.example.doctorpatientapplication1.scheduledAppointment;
+import com.example.doctorpatientapplication1.ScheduledAppointment;
 import com.example.doctorpatientapplication1.ui.CreateAppointmentActivity;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -42,7 +41,7 @@ public class HomeFragment extends Fragment{
     private RecyclerView recyclerView;
     private MyAdapter homeAdapter;
     private LinearLayoutManager linearLayoutManager;
-    List<scheduledAppointment> homeAppointment;
+    List<ScheduledAppointment> homeAppointment;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -59,23 +58,6 @@ public class HomeFragment extends Fragment{
         setHomeAppointment();
         linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        myRef.child(String.valueOf(0)).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                 scheduledAppointment appointments = dataSnapshot.getValue(scheduledAppointment.class);
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-            }
-        });
-
-
-
         FloatingActionButton doctorappointment = root.findViewById(R.id.fab_appointments);
         doctorappointment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,11 +80,19 @@ public class HomeFragment extends Fragment{
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 homeAppointment.clear();
-                for (int i = 0; i < dataSnapshot.getChildrenCount(); i++) {
-                    scheduledAppointment scheduledAppointment = dataSnapshot.child(String.valueOf(i)).getValue(scheduledAppointment.class);
-                    homeAppointment.add(scheduledAppointment);
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    ScheduledAppointment scheduledAppointment = snapshot.getValue(ScheduledAppointment.class);
+                    if (scheduledAppointment != null) {
+                        scheduledAppointment.setAppointmentID(snapshot.getKey());
+                        if (getActivity() instanceof DoctorActivity) {
+                            if (scheduledAppointment.createdByUser.equalsIgnoreCase(mAuth.getCurrentUser().getUid())) {
+                            } else continue;
+                        }
+                        homeAppointment.add(scheduledAppointment);
+                    }
                     homeAdapter = new MyAdapter(homeAppointment);
                     recyclerView.setAdapter(homeAdapter);
+
                 }
             }
 
